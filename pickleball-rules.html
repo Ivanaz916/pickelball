@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doubles Pickleball — Basic Rules</title>
+<style>
+  :root {
+    --navy: #0d2c54;
+    --blue: #1565c0;
+    --sky: #bbdefb;
+    --sky-light: #e3f2fd;
+    --accent: #4fc3f7;
+    --dark: #102a43;
+    --gray: #eef4fa;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI Light", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+    font-weight: 300;
+    letter-spacing: .3px;
+    background: linear-gradient(160deg, var(--sky-light), #ffffff 60%, var(--sky));
+    color: var(--dark);
+    min-height: 100vh;
+    padding: 24px;
+  }
+  h1, h2, h3 { font-weight: 300; }
+  strong { font-weight: 500; }
+
+  header { text-align: center; margin-bottom: 28px; }
+  header h1 {
+    font-size: 2.3rem;
+    color: var(--navy);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  header p { color: var(--blue); margin-top: 6px; font-size: 1.05rem; }
+
+  .card {
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: 0 4px 18px rgba(13,44,84,.10);
+    padding: 22px;
+    max-width: 800px;
+    margin: 0 auto 24px;
+    border-top: 3px solid var(--accent);
+  }
+  .card h2 {
+    color: var(--navy);
+    font-size: 1.25rem;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+    border-bottom: 2px solid var(--sky-light);
+    padding-bottom: 8px;
+  }
+  .card p, .card li { line-height: 1.6; margin-bottom: 8px; }
+  .card ul, .card ol { margin-left: 22px; }
+
+  .callout {
+    background: var(--sky-light);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: .95rem;
+  }
+  .callout strong { color: var(--navy); }
+
+  .kitchen-diagram { display: block; margin: 14px auto; }
+
+  footer {
+    text-align: center;
+    font-size: .8rem;
+    color: #6787a5;
+    margin-top: 8px;
+  }
+  footer a { color: var(--blue); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Doubles Pickleball</h1>
+  <p>Basic rules for tournament day</p>
+</header>
+
+<div class="card">
+  <h2>🎾 The Basics</h2>
+  <ul>
+    <li>Doubles pickleball is played <strong>2 vs 2</strong> on a badminton-sized court (20′ × 44′) with a net slightly lower than tennis (36″ at the sidelines, 34″ in the middle).</li>
+    <li>You hit a plastic ball with holes (a "pickleball") using solid paddles.</li>
+    <li>The ball must stay in bounds, and each side gets only <strong>one bounce max</strong> before it must be returned.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>🏓 Serving</h2>
+  <ul>
+    <li>The serve must be hit <strong>underhand</strong> (contact below the waist), from behind the baseline.</li>
+    <li>Serve <strong>diagonally crosscourt</strong> — it must land in the opposite diagonal service box, beyond the kitchen.</li>
+    <li>The server on the <strong>right side serves first</strong>; keep serving (alternating sides) as long as your team wins points.</li>
+    <li>When the first server faults, the <strong>partner serves next</strong> (except at the very start of the game — the first serving team gets only one server). When both servers fault, it's a <strong>side out</strong> and the other team serves.</li>
+  </ul>
+  <div class="callout">
+    <strong>Calling the score:</strong> say three numbers — <em>your score, their score, server number</em> (1 or 2). E.g., "4 – 2 – 1".
+  </div>
+</div>
+
+<div class="card">
+  <h2>⭐ Scoring</h2>
+  <ul>
+    <li><strong>Only the serving team can score points.</strong></li>
+    <li>Games are played to <strong>11, win by 2</strong>.</li>
+    <li>When your team's score is <strong>even</strong>, the first server should be on the right side; <strong>odd</strong>, on the left — a handy way to catch positioning mistakes.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>⛔ The Two-Bounce Rule</h2>
+  <ol>
+    <li>The serve must <strong>bounce once</strong> before the receiving team returns it.</li>
+    <li>The return must also <strong>bounce once</strong> before the serving team hits it.</li>
+    <li>After those two bounces, anyone may <strong>volley</strong> (hit out of the air) or play off the bounce.</li>
+  </ol>
+  <div class="callout">
+    <strong>Tip:</strong> because of this rule, the serving team should stay back near the baseline until the third shot.
+  </div>
+</div>
+
+<div class="card">
+  <h2>🍳 The Kitchen (Non-Volley Zone)</h2>
+  <svg class="kitchen-diagram" width="300" height="150" viewBox="0 0 300 150" role="img" aria-label="Court diagram showing the kitchen zones near the net">
+    <rect x="10" y="10" width="280" height="130" fill="#eef4fa" stroke="#0d2c54" stroke-width="2"/>
+    <rect x="108" y="10" width="42" height="130" fill="#bbdefb"/>
+    <rect x="150" y="10" width="42" height="130" fill="#bbdefb"/>
+    <line x1="150" y1="5" x2="150" y2="145" stroke="#0d2c54" stroke-width="4"/>
+    <line x1="10" y1="75" x2="108" y2="75" stroke="#0d2c54" stroke-width="1.5"/>
+    <line x1="192" y1="75" x2="290" y2="75" stroke="#0d2c54" stroke-width="1.5"/>
+    <text x="129" y="80" text-anchor="middle" font-size="9" fill="#0d2c54" font-family="sans-serif">kitchen</text>
+    <text x="171" y="80" text-anchor="middle" font-size="9" fill="#0d2c54" font-family="sans-serif">kitchen</text>
+    <text x="59" y="45" text-anchor="middle" font-size="9" fill="#6787a5" font-family="sans-serif">service box</text>
+    <text x="59" y="115" text-anchor="middle" font-size="9" fill="#6787a5" font-family="sans-serif">service box</text>
+    <text x="241" y="45" text-anchor="middle" font-size="9" fill="#6787a5" font-family="sans-serif">service box</text>
+    <text x="241" y="115" text-anchor="middle" font-size="9" fill="#6787a5" font-family="sans-serif">service box</text>
+  </svg>
+  <ul>
+    <li>The kitchen is the <strong>7-foot zone on each side of the net</strong>.</li>
+    <li>You <strong>may not volley while standing in the kitchen</strong> (or touching its line) — including if your momentum carries you in after the shot.</li>
+    <li>You <strong>may</strong> step into the kitchen to play a ball that has <strong>bounced</strong> — just step back out before volleying again.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>❌ Faults (you lose the rally)</h2>
+  <ul>
+    <li>Hitting the ball out of bounds or into the net.</li>
+    <li>Volleying before the two-bounce rule is satisfied.</li>
+    <li>Volleying while touching the kitchen or its line.</li>
+    <li>Letting the ball bounce twice on your side.</li>
+    <li>Serve landing in the kitchen, on the kitchen line, or in the wrong service box.</li>
+    <li>Touching the net or crossing onto the opponents' side during play.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>🤝 Tournament Etiquette</h2>
+  <ul>
+    <li>Call the score loudly before every serve.</li>
+    <li>Line calls are made by the receiving team — <strong>if in doubt, it's in</strong>.</li>
+    <li>Balls from other courts: stop play immediately and replay the point ("ball on court!").</li>
+    <li>Paddle-tap at the net after each game. Have fun!</li>
+  </ul>
+</div>
+
+<footer>
+  Part of the Pickleball Doubles Tournament kit · see <a href="pickleball-tournament.html">tournament organizer</a>
+</footer>
+
+</body>
+</html>

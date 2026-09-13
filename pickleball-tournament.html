@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pickleball Doubles Tournament Organizer</title>
+<style>
+  :root {
+    --navy: #0d2c54;
+    --blue: #1565c0;
+    --sky: #bbdefb;
+    --sky-light: #e3f2fd;
+    --accent: #4fc3f7;
+    --dark: #102a43;
+    --gray: #eef4fa;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI Light", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+    font-weight: 300;
+    letter-spacing: .3px;
+    background: linear-gradient(160deg, var(--sky-light), #ffffff 60%, var(--sky));
+    color: var(--dark);
+    min-height: 100vh;
+    padding: 24px;
+  }
+  h1, h2, h3, h4 { font-weight: 300; }
+  strong { font-weight: 500; }
+
+  header { text-align: center; margin-bottom: 28px; }
+  header h1 {
+    font-size: 2.3rem;
+    color: var(--navy);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  header p { color: var(--blue); margin-top: 6px; font-size: 1.05rem; }
+
+  .card {
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: 0 4px 18px rgba(13,44,84,.10);
+    padding: 22px;
+    max-width: 950px;
+    margin: 0 auto 24px;
+    border-top: 3px solid var(--accent);
+  }
+  .card h2 {
+    color: var(--navy);
+    font-size: 1.25rem;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+    border-bottom: 2px solid var(--sky-light);
+    padding-bottom: 8px;
+  }
+
+  .controls { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-size: .85rem; font-weight: 400; color: var(--blue); }
+  input, select {
+    padding: 10px 12px;
+    border: 1px solid #b3cde4;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    font-weight: 300;
+    min-width: 120px;
+    color: var(--dark);
+  }
+  input:focus, select:focus { outline: 2px solid var(--blue); border-color: transparent; }
+
+  button {
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 20px;
+    font-size: 1rem;
+    font-family: inherit;
+    font-weight: 300;
+    letter-spacing: .5px;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  button:hover { background: var(--blue); }
+  button.secondary { background: #7f9db9; }
+  button.secondary:hover { background: #6787a5; }
+
+  .player-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .chip {
+    background: var(--sky-light);
+    border: 1px solid var(--sky);
+    border-radius: 20px;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: .9rem;
+  }
+  .chip span.name { cursor: pointer; }
+  .chip span.name:hover { text-decoration: underline; color: var(--blue); }
+  .chip input { min-width: 90px; width: 110px; padding: 2px 6px; font-size: .9rem; border-radius: 6px; }
+  .chip button { background: none; color: #c62828; padding: 0; font-size: 1rem; line-height: 1; }
+  .chip button:hover { background: none; color: #b71c1c; }
+
+  .pools { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+  .pool { background: var(--gray); border-radius: var(--radius); padding: 14px; }
+  .pool h3 { color: var(--navy); margin-bottom: 8px; letter-spacing: .5px; }
+  .pool h3 small { color: #6787a5; font-size: .75rem; }
+  .pool ul { list-style: none; }
+  .pool li { padding: 4px 0; border-bottom: 1px dashed var(--sky); }
+
+  table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+  th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--gray); }
+  th { background: var(--sky-light); color: var(--navy); font-weight: 400; letter-spacing: .5px; }
+  .court-tag {
+    background: var(--accent); color: var(--navy); border-radius: 6px;
+    padding: 2px 8px; font-size: .8rem; font-weight: 500;
+  }
+  .round-tag {
+    background: var(--navy); color: #fff; border-radius: 6px;
+    padding: 2px 8px; font-size: .8rem; font-weight: 500;
+  }
+  .score-input { width: 55px; min-width: 55px; padding: 6px; text-align: center; }
+
+  .bracket { display: flex; gap: 28px; overflow-x: auto; padding-bottom: 10px; }
+  .round { display: flex; flex-direction: column; justify-content: space-around; gap: 18px; min-width: 220px; }
+  .round h4 { text-align: center; color: var(--navy); letter-spacing: 1px; }
+  .match { background: var(--gray); border-radius: 8px; padding: 8px; display: flex; flex-direction: column; gap: 4px; }
+  .match .slot {
+    background: #fff; border-radius: 6px; padding: 6px 10px;
+    display: flex; justify-content: space-between; cursor: pointer;
+    border: 1px solid transparent; font-size: .9rem;
+  }
+  .match .slot:hover { border-color: var(--blue); }
+  .match .slot.winner { background: var(--sky-light); font-weight: 500; border-color: var(--accent); }
+  .champion { text-align: center; font-size: 1.4rem; margin-top: 14px; color: var(--blue); font-weight: 400; letter-spacing: 1px; }
+  .hint { font-size: .85rem; color: #6787a5; margin-top: 8px; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Pickleball Doubles Tournament</h1>
+  <p>Quick pools (2 games per team) — then direct elimination!</p>
+</header>
+
+<!-- SETUP -->
+<div class="card" id="setupCard">
+  <h2>1. Setup</h2>
+  <div class="controls">
+    <div class="field">
+      <label for="playerName">Add player</label>
+      <input id="playerName" type="text" placeholder="Player name" onkeydown="if(event.key==='Enter')addPlayer()">
+    </div>
+    <button onclick="addPlayer()">+ Add</button>
+    <div class="field">
+      <label for="numCourts">Courts (max 4)</label>
+      <select id="numCourts">
+        <option>1</option><option>2</option><option selected>3</option><option>4</option>
+      </select>
+    </div>
+    <button onclick="generateTeams()">Make Teams &amp; Pools ▶</button>
+    <button onclick="generateTeams(true)">🎲 Random Teams &amp; Pools</button>
+    <button class="secondary" onclick="resetAll()">Reset to defaults</button>
+  </div>
+  <div class="player-list" id="playerList"></div>
+  <p class="hint" id="playerCount"></p>
+  <p class="hint">💡 Click any name to edit it. Doubles: players are paired into teams of 2 (an even number of players works best). Every team plays exactly 2 pool games (a leftover pool of 4 plays 3). Note: courts used = min(courts, teams ÷ 2), so with 5 teams only 2 courts can run at once.</p>
+</div>
+
+<!-- TEAMS & POOLS -->
+<div class="card hidden" id="poolsCard">
+  <h2>2. Teams &amp; Pools</h2>
+  <div class="pools" id="poolsContainer"></div>
+</div>
+
+<!-- SCHEDULE -->
+<div class="card hidden" id="scheduleCard">
+  <h2>3. Pool Games — enter scores</h2>
+  <table>
+    <thead><tr><th>Time slot</th><th>Court</th><th>Pool</th><th>Match</th><th>Score</th></tr></thead>
+    <tbody id="scheduleBody"></tbody>
+  </table>
+  <br>
+  <button onclick="buildBracket()">Finish Pools → Elimination ▶</button>
+  <p class="hint">Matches in the same time slot run simultaneously on different courts — no team plays twice in one slot. Standings use wins, then point differential.</p>
+</div>
+
+<!-- BRACKET -->
+<div class="card hidden" id="bracketCard">
+  <h2>4. Direct Elimination</h2>
+  <div class="bracket" id="bracketContainer"></div>
+  <div class="champion" id="championBox"></div>
+  <p class="hint">Click a team to mark the match winner.</p>
+</div>
+
+<script>
+const DEFAULT_COUNT = 20;
+let players = [];
+let teams = [];      // each team = { name, players: [a, b] }
+let pools = [];      // pools of team indexes
+let schedule = [];
+let bracketRounds = [];
+let editingIndex = -1;
+let circleMode = false; // 5-team special case: each team plays 2 neighbors
+
+function defaultPlayers() {
+  return Array.from({ length: DEFAULT_COUNT }, (_, i) => `Player ${i + 1}`);
+}
+
+function addPlayer() {
+  const input = document.getElementById('playerName');
+  const name = input.value.trim();
+  if (!name) return;
+  if (players.includes(name)) { alert('Name already added.'); return; }
+  players.push(name);
+  input.value = '';
+  input.focus();
+  renderPlayers();
+}
+
+function removePlayer(i) { players.splice(i, 1); renderPlayers(); }
+
+function startEdit(i) { editingIndex = i; renderPlayers(); }
+
+function finishEdit(i, value) {
+  const name = value.trim();
+  if (name && !players.some((p, idx) => p === name && idx !== i)) players[i] = name;
+  editingIndex = -1;
+  renderPlayers();
+}
+
+function renderPlayers() {
+  document.getElementById('playerList').innerHTML = players.map((p, i) =>
+    editingIndex === i
+      ? `<span class="chip"><input id="editInput" value="${p}"
+           onkeydown="if(event.key==='Enter')finishEdit(${i},this.value)"
+           onblur="finishEdit(${i},this.value)"></span>`
+      : `<span class="chip"><span class="name" title="Click to edit" onclick="startEdit(${i})">${p}</span>
+           <button onclick="removePlayer(${i})">✕</button></span>`
+  ).join('');
+  const el = document.getElementById('editInput');
+  if (el) { el.focus(); el.select(); }
+  document.getElementById('playerCount').textContent =
+    `${players.length} players → ${Math.floor(players.length / 2)} doubles teams` +
+    (players.length < 8 ? ' — need at least 8 players (4 teams).' : '') +
+    (players.length % 2 ? ' ⚠️ Odd number: one player will sit out.' : '');
+}
+
+function resetAll() {
+  players = defaultPlayers();
+  teams = []; pools = []; schedule = []; bracketRounds = []; editingIndex = -1;
+  circleMode = false;
+  renderPlayers();
+  ['poolsCard','scheduleCard','bracketCard'].forEach(id => document.getElementById(id).classList.add('hidden'));
+  document.getElementById('championBox').textContent = '';
+}
+
+function generateTeams(randomize = false) {
+  if (players.length < 8) { alert('Need at least 8 players (4 teams).'); return; }
+  const selectedPlayers = [...players];
+  if (randomize) {
+    for (let i = selectedPlayers.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [selectedPlayers[i], selectedPlayers[j]] = [selectedPlayers[j], selectedPlayers[i]];
+    }
+  }
+  if (selectedPlayers.length % 2) selectedPlayers.pop(); // odd player sits out
+  teams = [];
+  for (let i = 0; i < selectedPlayers.length; i += 2) {
+    teams.push({ name: `${selectedPlayers[i]} & ${selectedPlayers[i + 1]}`, players: [selectedPlayers[i], selectedPlayers[i + 1]] });
+  }
+  generatePools();
+}
+
+function generatePools() {
+  const idx = teams.map((_, i) => i);
+  const n = idx.length;
+  pools = [];
+  circleMode = false;
+
+  if (n === 5) {
+    // Special case: circle format — one pool, each team plays exactly 2 games
+    pools = [idx];
+    circleMode = true;
+  } else {
+    // Pools of 3 (2 games each); leftovers merge into a pool of 4
+    const sizes = [];
+    let remaining = n;
+    while (remaining > 0) {
+      if (remaining < 3 || remaining === 4) {
+        sizes.length && remaining < 3 ? sizes[sizes.length - 1] += remaining : sizes.push(remaining);
+        remaining = 0;
+      } else { sizes.push(3); remaining -= 3; }
+    }
+    let cursor = 0;
+    sizes.forEach(s => { pools.push(idx.slice(cursor, cursor + s)); cursor += s; });
+  }
+
+  document.getElementById('poolsContainer').innerHTML = pools.map((pool, i) =>
+    `<div class="pool"><h3>Pool ${String.fromCharCode(65 + i)} <small>(${pool.length} teams · ${circleMode ? 2 : pool.length - 1} games each)</small></h3>
+     <ul>${pool.map(t => `<li>🏓 ${teams[t].name}</li>`).join('')}</ul></div>`).join('');
+  document.getElementById('poolsCard').classList.remove('hidden');
+
+  buildSchedule();
+}
+
+function buildSchedule() {
+  const courts = parseInt(document.getElementById('numCourts').value);
+  // Build all pool matches
+  let matches = [];
+  pools.forEach((pool, pi) => {
+    if (circleMode) {
+      // Circle: each team plays its two neighbors → exactly 2 games each
+      for (let a = 0; a < pool.length; a++)
+        matches.push({ pool: pi, t1: pool[a], t2: pool[(a + 1) % pool.length], s1: '', s2: '' });
+    } else {
+      for (let a = 0; a < pool.length; a++)
+        for (let b = a + 1; b < pool.length; b++)
+          matches.push({ pool: pi, t1: pool[a], t2: pool[b], s1: '', s2: '' });
+    }
+  });
+
+  // Group into time slots: up to <courts> matches per slot, no team twice in a slot
+  schedule = [];
+  let slot = 1;
+  while (matches.length) {
+    const busy = new Set();
+    let courtNum = 1;
+    for (let i = 0; i < matches.length && courtNum <= courts; ) {
+      const m = matches[i];
+      if (!busy.has(m.t1) && !busy.has(m.t2)) {
+        m.slot = slot;
+        m.court = courtNum++;
+        busy.add(m.t1); busy.add(m.t2);
+        schedule.push(m);
+        matches.splice(i, 1);
+      } else i++;
+    }
+    slot++;
+  }
+
+  document.getElementById('scheduleBody').innerHTML = schedule.map((m, i) => `
+    <tr>
+      <td><span class="round-tag">Slot ${m.slot}</span></td>
+      <td><span class="court-tag">Court ${m.court}</span></td>
+      <td>Pool ${String.fromCharCode(65 + m.pool)}</td>
+      <td><strong>${teams[m.t1].name}</strong> vs <strong>${teams[m.t2].name}</strong></td>
+      <td>
+        <input class="score-input" type="number" min="0" onchange="schedule[${i}].s1=this.value">
+        –
+        <input class="score-input" type="number" min="0" onchange="schedule[${i}].s2=this.value">
+      </td>
+    </tr>`).join('');
+  document.getElementById('scheduleCard').classList.remove('hidden');
+}
+
+function standings() {
+  const stats = teams.map(() => ({ wins: 0, diff: 0 }));
+  schedule.forEach(m => {
+    const s1 = parseInt(m.s1), s2 = parseInt(m.s2);
+    if (isNaN(s1) || isNaN(s2)) return;
+    stats[m.t1].diff += s1 - s2;
+    stats[m.t2].diff += s2 - s1;
+    if (s1 > s2) stats[m.t1].wins++; else if (s2 > s1) stats[m.t2].wins++;
+  });
+  return stats;
+}
+
+function buildBracket() {
+  if (schedule.some(m => m.s1 === '' || m.s2 === '')) {
+    if (!confirm('Some scores are missing. Continue anyway?')) return;
+  }
+  const stats = standings();
+  const ranked = [];
+  const maxPoolSize = Math.max(...pools.map(p => p.length));
+  for (let rank = 0; rank < maxPoolSize; rank++) {
+    pools.forEach(pool => {
+      const sorted = [...pool].sort((a, b) =>
+        stats[b].wins - stats[a].wins || stats[b].diff - stats[a].diff);
+      if (sorted[rank] !== undefined) ranked.push(sorted[rank]);
+    });
+  }
+  const size = Math.pow(2, Math.ceil(Math.log2(ranked.length)));
+  const seeds = [...ranked];
+  while (seeds.length < size) seeds.push(null);
+
+  let round = [];
+  for (let i = 0; i < size / 2; i++) round.push([seeds[i], seeds[size - 1 - i]]);
+
+  bracketRounds = [round];
+  while (round.length > 1) {
+    round = Array.from({ length: round.length / 2 }, () => [null, null]);
+    bracketRounds.push(round);
+  }
+  bracketRounds[0].forEach((m, i) => {
+    if (m[0] !== null && m[1] === null) advance(0, i, 0, false);
+    else if (m[1] !== null && m[0] === null) advance(0, i, 1, false);
+  });
+  renderBracket();
+  document.getElementById('bracketCard').classList.remove('hidden');
+  document.getElementById('bracketCard').scrollIntoView({ behavior: 'smooth' });
+}
+
+function advance(r, m, slot, rerender = true) {
+  const winner = bracketRounds[r][m][slot];
+  if (winner === null || winner === undefined) return;
+  bracketRounds[r][m].winner = slot;
+  if (r + 1 < bracketRounds.length) {
+    bracketRounds[r + 1][Math.floor(m / 2)][m % 2] = winner;
+  } else {
+    document.getElementById('championBox').textContent = `🏆 Champions: ${teams[winner].name}!`;
+  }
+  if (rerender) renderBracket();
+}
+
+function renderBracket() {
+  const total = bracketRounds.length;
+  document.getElementById('bracketContainer').innerHTML = bracketRounds.map((round, r) => {
+    const label = total - r === 1 ? 'Final' : total - r === 2 ? 'Semifinals' :
+                  total - r === 3 ? 'Quarterfinals' : `Round ${r + 1}`;
+    return `<div class="round"><h4>${label}</h4>` + round.map((m, mi) =>
+      `<div class="match">
+        ${[0, 1].map(s => {
+          const t = m[s];
+          const name = t !== null && t !== undefined ? teams[t].name : (r === 0 ? 'BYE' : 'TBD');
+          return `<div class="slot ${m.winner === s ? 'winner' : ''}" onclick="advance(${r},${mi},${s})">
+              <span>${name}</span></div>`;
+        }).join('')}
+      </div>`).join('') + `</div>`;
+  }).join('');
+}
+
+// Initialize with defaults
+resetAll();
+</script>
+</body>
+</html>
